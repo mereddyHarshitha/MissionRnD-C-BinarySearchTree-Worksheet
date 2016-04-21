@@ -33,9 +33,27 @@ struct node{
 	struct node *right;
 };
 
+struct node * balanced_bst(int *arr, int lIndex, int rIndex){
 
-struct node * convert_array_to_bst(int *arr, int len){
+	struct node *curr = (struct node*)malloc(sizeof(struct node));
+
+	if (lIndex > rIndex)
+		return NULL;
+
+	int midIndex = (lIndex + rIndex) / 2;
+
+	curr->data = arr[midIndex];
+	curr->left = balanced_bst(arr, lIndex, midIndex - 1);
+	curr->right = balanced_bst(arr, midIndex + 1, rIndex);
+
+	return curr;
 	
-	return NULL;
+}
+struct node * convert_array_to_bst(int *arr, int len){
+
+	if (arr==NULL)
+		return NULL;
+
+	return balanced_bst(arr, 0, len - 1);
 }
 
