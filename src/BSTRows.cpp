@@ -29,9 +29,64 @@ struct node{
 	struct node *right;
 };
 
+void array(struct node *root, int position, int *arr,int *index){
 
+	if (root == NULL)
+		return;
+
+	if (position == 0){
+		arr[*index] = root->data;
+		*index = *index + 1;
+	}
+	else{
+		array(root->right, position - 1, arr, index);
+		array(root->left, position - 1, arr, index);
+	}
+
+}
+int getHeight(struct node *root){
+
+	if (root == NULL)
+		return 0;
+
+	if (root->left == NULL && root->right == NULL)
+		return 1;
+
+	int lHeight = getHeight(root->left);
+	int rHeight = getHeight(root->right);
+
+	if (lHeight > rHeight)
+		return lHeight + 1;
+	else
+		return rHeight + 1;
+}
+
+int power(int num1, int num2){
+
+	int i = 0;
+	int res=1;
+	for (i = 0; i < num2; i++){
+		res = res*num1;
+	}
+	return res;
+}
 
 int* BSTRighttoLeftRows(struct node* root)
 {
-    return NULL;
+	if (root == NULL)
+		return NULL;
+
+	int height = getHeight(root);
+	int arrSize = power(2, height) - 1;
+
+	int *arr = (int*)malloc(arrSize*sizeof(int));
+    
+	int position;
+	int index = 0;
+	
+	for (position = 0; position < height; position++)
+		array(root, position, arr, &index);
+	
+	return arr;
+
 }
